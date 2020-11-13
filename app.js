@@ -18,6 +18,7 @@ app.use('/user', controllers.User);
 //* Verified Routes
 // General user routes
 app.use('/music', middlewares.ValidateJWT, controllers.Music);
+app.use('/gig', middlewares.ValidateJWT, controllers.Gig);
 
 // Admin routes
 
