@@ -53,4 +53,57 @@ gigController.post('/new', async (req, res) => {
   }
 });
 
+gigController.route('/:id')
+  .put(async (req, res) => {
+    try {
+      const { name, date } = req.body;
+      const toUpdate = await Gig.findOne({
+        where: {
+          id: req.params.id,
+          userId: req.user.id,
+        },
+      });
+      if (toUpdate) {
+        Object.assign(toUpdate, {name, date});
+        toUpdate.save();
+        res.status(200).json({
+          message: 'Gig updated successfully',
+          updated: toUpdate,
+        });
+      } else {
+        res.status(404).json({
+          message: 'Gig not found or gig does not belong to user'
+        });
+      }
+    } catch (e) {
+      res.status(500).json({
+        message: 'Failed to interact with gigs'
+      })
+    }
+  })
+  .delete(async (req, res) => {
+    try {
+      const toDelete = await Gig.findOne({
+        where: {
+          id: req.params.id,
+          userId: req.user.id,
+        },
+      });
+      if (toDelete) {
+        toDelete.destroy();
+        res.status(200).json({
+          message: 'Gig deleted successfully'
+        })
+      } else {
+        res.status(404).json({
+          message: 'Gig not found or gig does not belong to user'
+        });
+      }
+    } catch (e) {
+      res.status(500).json({
+        message: 'Failed to interact with gigs'
+      })
+    }
+  })
+
 module.exports = gigController;
