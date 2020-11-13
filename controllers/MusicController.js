@@ -27,9 +27,9 @@ musicController.get('/', async (req, res) => {
 });
 
 musicController.post('/new', async (req, res) => {
-  let { title, artist, style, instrument, duration } = req.body;
-  let ownerId = req.user.id;
   try {
+    const { title, artist, style, instrument, duration } = req.body;
+    const ownerId = req.user.id;
     if (title) {
       let newMusic = await Music.create({
         title,
@@ -54,5 +54,58 @@ musicController.post('/new', async (req, res) => {
     });
   }
 });
+
+musicController.route('/:id')
+  .put(async (req, res) => {
+    try {
+      const { title, artist, style, instrument, duration } = req.body;
+      const toUpdate = await Music.findOne({
+        where: {
+          id: req.params.id,
+          userId: req.user.id,
+        },
+      });
+      if (toUpdate) {
+        Object.assign(toUpdate, {title, artist, style, instrument, duration});
+        toUpdate.save();
+        res.status(200).json({
+          message: 'Item updated successfully',
+          updated: toUpdate,
+        });
+      } else {
+        res.status(404).json({
+          message: 'Item not found or item does not belong to user'
+        });
+      }
+    } catch (e) {
+      res.status(500).json({
+        message: 'Failed to interact with music items'
+      });
+    }
+  })
+  .delete(async (req, res) => {
+    try {
+      const toDelete = await Music.findOne({
+        where: {
+          id: req.params.id,
+          userId: req.user.id,
+        },
+      });
+      if (toDelete) {
+        toDelete.destroy()
+        res.status(200).json({
+          message: 'Item deleted successfully'
+        });
+      } else {
+        res.status(404).json({
+          message: 'Item not found or item does not belong to user',
+        });
+      }
+    } catch (e) {
+      res.status(500).json({
+        message: 'Failed to interact with music items'
+      });
+    }
+  });
 
 module.exports = musicController;
