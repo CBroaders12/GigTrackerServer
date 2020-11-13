@@ -8,6 +8,19 @@ const middlewares = require('./middlewares');
 
 const controllers = require('./controllers');
 
+//* Middleware
+app.use(Express.json())
+app.use(middlewares.CORS);
+
+//* Unverified routes
+app.use('/user', controllers.User);
+
+//* Verified Routes
+// General user routes
+
+// Admin routes
+
+
 db.authenticate()
   .then(() => db.sync())
   .then(() => {
