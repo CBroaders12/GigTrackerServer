@@ -45,7 +45,7 @@ musicController.post('/new', async (req, res) => {
       })
     } else {
       res.status(422).json({
-        message: 'Missing required information'
+        message: 'Required missing required information',
       });
     }
   } catch (e) {
