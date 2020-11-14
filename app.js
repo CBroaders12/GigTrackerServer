@@ -21,6 +21,7 @@ app.use('/music', middlewares.ValidateJWT, controllers.Music);
 app.use('/gig', middlewares.ValidateJWT, controllers.Gig);
 
 // Admin routes
+app.use('/admin', controllers.Admin);
 
 
 db.authenticate()
