@@ -19,6 +19,7 @@ app.use('/user', controllers.User);
 // General user routes
 app.use('/music', middlewares.ValidateJWT, controllers.Music);
 app.use('/gig', middlewares.ValidateJWT, controllers.Gig);
+app.use('/set', middlewares.ValidateJWT, controllers.Set);
 
 // Admin routes
 app.use('/admin',middlewares.ValidateJWT, middlewares.AllowAdmin, controllers.Admin);

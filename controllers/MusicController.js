@@ -20,7 +20,7 @@ musicController.get('/', async (req, res) => {
       });
     }
   } catch (e) {
-    res.status(500).message({
+    res.status(500).json({
       message: 'Failed to retrieve music for user',
     });
   }
