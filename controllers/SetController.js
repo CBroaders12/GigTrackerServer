@@ -21,7 +21,6 @@ setController.post('/addsong', async (req, res) => {
       },
     });
 
-    console.log(addedMusic, targetGig);
     if (addedMusic && targetGig) {
       let newEntry = await Set.create({
         musicId,
@@ -41,6 +40,37 @@ setController.post('/addsong', async (req, res) => {
         message: 'Gig not found in user\'s schedule',
       });
     }
+  } catch (e) {
+    res.status(500).json({
+      message: 'Failed to interact with database'
+    });
+  }
+});
+
+setController.get('/:id', async (req, res) => {
+  try {
+    const gigId = req.params.id;
+    const userId = req.user.id;
+
+    let targetGig = await Gig.findOne({
+      where: {
+        id: gigId,
+        userId,
+      },
+      include: [
+        {
+          model: Music,
+          through: {attributes: ['notes']}
+        }
+      ]
+    });
+
+    res.status(200).json({targetGig});
+
+    if (targetGig) {
+
+    }
+
   } catch (e) {
     res.status(500).json({
       message: 'Failed to interact with database'
