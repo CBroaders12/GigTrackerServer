@@ -22,7 +22,7 @@ app.use('/gig', middlewares.ValidateJWT, controllers.Gig);
 app.use('/set', middlewares.ValidateJWT, controllers.Set);
 
 // Admin routes
-app.use('/admin',middlewares.ValidateJWT, middlewares.AllowAdmin, controllers.Admin);
+app.use('/admin', middlewares.ValidateJWT, middlewares.AllowAdmin, controllers.Admin);
 
 
 db.authenticate()
