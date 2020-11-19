@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../database/models');
 
 const validateJWTMiddleware = (req, res, next) => {
-  if (req.method === ' OPTIONS') {
+  if (req.method === 'OPTIONS') {
     return next();
   } else if (req.headers.authorization) {
     const { authorization } = req.headers;

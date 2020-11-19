@@ -25,7 +25,7 @@ app.use('/admin', middlewares.ValidateJWT, middlewares.AllowAdmin, controllers.A
 
 
 db.authenticate()
-  .then(() => db.sync({force: true}))
+  .then(() => db.sync())
   .then(() => {
     app.listen(process.env.PORT, () => {
       console.log(`[server]: App is listening at http://localhost:${process.env.PORT}`)

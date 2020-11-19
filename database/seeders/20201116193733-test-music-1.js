@@ -4,39 +4,39 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('music', [
       {
-        title: 'Suite in G Major',
-        artist: 'J. S. Bach',
+        title: 'Auf dem Wasser zu singen',
+        artist: 'Franz Schubert',
         style: 'Classical',
-        instrument: 'Cello',
-        duration: '3:15',
+        instrument: 'Voice',
+        duration: '3:22',
         createdAt: new Date(),
         updatedAt: new Date(),
-        userId: 4,
+        userId: 2,
       },
       {
-        title: 'Doubt',
-        artist: 'Mikhail Glinka',
+        title: 'Nebbie',
+        artist: 'Ottorino Respighi',
         style: 'Classical',
-        instrument: 'Cello',
-        duration: '4:15',
+        instrument: 'Voice',
+        duration: '3:02',
         createdAt: new Date(),
         updatedAt: new Date(),
-        userId: 4,
+        userId: 2,
       },
       {
-        title: 'Sonata in B Minor for solo cello, op. 8, mvt. III',
-        artist: 'Zoltan Kodaly',
-        style: 'Classical',
-        instrument: 'Cello',
-        duration: '9:07',
+        title: 'You Raise Me Up',
+        artist: 'Josh Groban',
+        style: 'Pop',
+        instrument: 'Voice',
+        duration: '4:52',
         createdAt: new Date(),
         updatedAt: new Date(),
-        userId: 4,
+        userId: 2,
       },
     ])
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('music', { userId: 2 }, {})
+    return queryInterface.bulkDelete('music', { userId: 2 })
   }
 };
