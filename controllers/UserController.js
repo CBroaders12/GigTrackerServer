@@ -51,7 +51,8 @@ userController.post('/login', async (req, res) => {
       console.log(token);
       res.status(200).json({
         message: 'Login successful',
-        token
+        token,
+        userType: loginUser.userType,
       });
     } else {
       res.status(401).json({
