@@ -3,6 +3,7 @@ const { Gig, Music, Set } = require('../database/models');
 
 const gigController = Router();
 
+// Read all a user's gig
 gigController.get('/', async (req, res) => {
   try {
     const gigEntries = await Gig.findAll({
@@ -26,6 +27,7 @@ gigController.get('/', async (req, res) => {
   }
 });
 
+// Create a new gig
 gigController.post('/new', async (req, res) => {
   try {
     const { name, date } = req.body;
@@ -53,6 +55,7 @@ gigController.post('/new', async (req, res) => {
   }
 });
 
+// Read, Update, and Delete a specific gig
 gigController.route('/:gig_id')
   .get(async (req, res) => {
     try {
@@ -108,7 +111,7 @@ gigController.route('/:gig_id')
     } catch (e) {
       res.status(500).json({
         message: 'Failed to interact with gigs'
-      })
+      });
     }
   })
   .delete(async (req, res) => {
@@ -136,47 +139,95 @@ gigController.route('/:gig_id')
     }
   });
 
-gigController.delete('/:gig_id/:music_id', async (req, res) => {
-  try {
-    const gigId = req.params.gig_id;
-    const musicId  = req.params.music_id;
-    const userId = req.user.id;
 
-    let targetGig = await Gig.findOne({
-      where: {
-        id: gigId,
-        userId,
-      },
-    });
-    if (targetGig) {
-      let toDelete = await Set.findOne({
+gigController.route('/:gig_id/:music_id')
+  .delete(async (req, res) => {
+    try {
+      const gigId = req.params.gig_id;
+      const musicId  = req.params.music_id;
+      const userId = req.user.id;
+
+      let targetGig = await Gig.findOne({
         where: {
-          gigId,
-          musicId,
+          id: gigId,
+          userId,
         },
       });
-      if (toDelete) {
-        toDelete.destroy();
-        res.status(200).json({
-          message: 'Music successfully removed from gig',
+      if (targetGig) {
+        let toDelete = await Set.findOne({
+          where: {
+            gigId,
+            musicId,
+          },
         });
+        if (toDelete) {
+          toDelete.destroy();
+          res.status(200).json({
+            message: 'Music successfully removed from gig',
+          });
+        } else {
+          res.status(404).json({
+            message: 'Music not found in gig'
+          });
+        }
       } else {
         res.status(404).json({
-          message: 'Music not found in gig'
+          message: 'Gig does not exist or does not belong to user',
         });
       }
-    } else {
-      res.status(404).json({
-        message: 'Gig does not exist or does not belong to user',
+    } catch (e) {
+      res.status(500).json({
+        message: 'Failed to interact with database',
       });
     }
-  } catch (e) {
-    res.status(500).json({
-      message: 'Failed to interact with database',
-    });
-  }
-});
+  })
+  .put(async (req, res) => {
+    try {
+      const gigId = req.params.gig_id;
+      const musicId  = req.params.music_id;
+      const userId = req.user.id;
+      const { notes } = req.body;
+      console.log(req.body);
 
+      let targetGig = await Gig.findOne({
+        where: {
+          id: gigId,
+          userId,
+        },
+      });
+
+      if (targetGig) {
+        let toUpdate = await Set.findOne({
+          where: {
+            gigId,
+            musicId,
+          },
+        });
+        if (toUpdate) {
+          Object.assign(toUpdate, { notes });
+          toUpdate.save();
+          res.status(200).json({
+            message: 'Notes successfully edited',
+            updated: toUpdate,
+          });
+        } else {
+          res.status(404).json({
+            message: 'Music not found in gig'
+          });
+        }
+      } else {
+        res.status(404).json({
+          message: 'Gig not found or does not belong to user'
+        });
+      }
+    } catch (e) {
+      res.status(500).json({
+        message: 'Failed to interact with database'
+      });
+    }
+  });
+
+// Add song from user's library to gig
 gigController.post('/:gig_id/add', async (req, res) => {
   try {
     const { musicId, notes } = req.body;
