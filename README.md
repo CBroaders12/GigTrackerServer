@@ -81,21 +81,17 @@ Retrieves all the music in a user's library
 
 ```json
 {
-  "results": [
-    {
-      "title": "Number 9",
-      "artist": "Moon Hooch",
-      "style": null,
-      "instrument": "Saxophone",
-      "duration": "00:04:26"
-    },
-    {
-      ...
-    },
-    .
-    .
-    .
-  ]
+	"results": [
+		{
+			"title": "Number 9",
+			"artist": "Moon Hooch",
+			"style": null,
+			"instrument": "Saxophone",
+			"duration": "00:04:26"
+		},
+		{},
+		{}
+	]
 }
 ```
 
@@ -141,7 +137,114 @@ Deletes a specified piece if it belongs to the user
 
 ### `/gig`
 
-**_UNDER CONSTRUCTION_**
+#### `/gig` - **GET**
+
+Retrieve a list of all gigs made by user
+
+**Response**
+
+```json
+{
+	"gigs": [
+		{
+			"name": "Johnson Wedding",
+			"date": "2021-06-30"
+		},
+		{},
+		{}
+	]
+}
+```
+
+#### `/gig/new` - **POST**
+
+Creates a new gig in the user's account
+
+**Request**
+
+```json
+{
+	"name": "Christmas Livestream",
+	"date": "2020-12-24"
+}
+```
+
+#### `/gig/<gigId>` - **GET**
+
+Retrieves all info for the specified gig including name, date, and songs with notes
+
+**Response**
+
+```json
+{
+	"name": "",
+	"date": "",
+	"music": [
+		{
+			"title": "O Holy Night",
+			"artist": "Adolphe Adam",
+			"style": "Holiday",
+			"instrument": "Piano",
+			"duration": "00:03:27",
+			"set": {
+				"notes": "Should be in the key of D for the singer"
+			},
+		}
+		{
+
+		},
+		{
+
+		},
+	]
+}
+```
+
+#### `/gig/<gigId>` - **PUT**
+
+Updates the info, either name or date, of the specified gig
+
+**Request**
+
+```json
+{
+	"name": "Christmas Eve Livestream",
+	"date": "2020-12-24"
+}
+```
+
+#### `/gig/<gigId>` - **DELETE**
+
+Deletes the specified gig
+
+#### `/gig/<gigId>/add` - **POST**
+
+Adds a new song from the user's library to the specified gigs including notes specific to gig
+
+**Request**
+
+```json
+{
+	"musicId": 27,
+	"notes": "I will probably change this endpoint to be consistent with the others"
+}
+```
+
+#### `/gig/<gigId>/<musicId>` - **PUT**
+
+Updates the gig-specific notes for a song on the gig
+
+**Request**
+
+```json
+{
+	"notes": "We should transpose the bridge up a M3"
+}
+```
+
+#### `/gig/<gigId>/<musicId>` - **DELETE**
+
+Deletes a song from the specified gig
 
 ---
 
@@ -155,20 +258,16 @@ Retrieves a list of all users
 
 ```json
 {
-  "users": [
-    {
-      "email": "example@email.com",
-      "password": "hashedpassword",
-      "userType": "admin | user"
-    },
+	"users": [
+		{
+			"email": "example@email.com",
+			"password": "hashedpassword",
+			"userType": "admin | user"
+		},
 
-    {
-      ...
-    },
-    .
-    .
-    .
-  ]
+		{},
+		{}
+	]
 }
 ```
 
@@ -191,3 +290,7 @@ Updates the password for the user with the specified ID
 #### `/admin/add/<userId>` - **PUT**
 
 Gives a specified user Admin status
+
+## License
+
+© [Conor Broaders](https://github.com/CBroaders12)
