@@ -190,12 +190,8 @@ Retrieves all info for the specified gig including name, date, and songs with no
 				"notes": "Should be in the key of D for the singer"
 			},
 		}
-		{
-
-		},
-		{
-
-		},
+		{},
+		{}
 	]
 }
 ```
@@ -264,7 +260,6 @@ Retrieves a list of all users
 			"password": "hashedpassword",
 			"userType": "admin | user"
 		},
-
 		{},
 		{}
 	]
